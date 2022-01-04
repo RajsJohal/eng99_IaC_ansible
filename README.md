@@ -1,7 +1,11 @@
 # Infrastructure as Code (IaC)
 ## IAC with Ansible
 ## Ansible benefits
+* Automate provisioning of multiple servers without needing to access each server individually
+* Saves costs and time
+
 ## Ansibe in DevOps
+* Create a VM which can SSH into various servers in order to run provisioning
 
 
 ### Let's create Vagrantfile to create Three VMs for Ansible architecture
@@ -65,7 +69,7 @@
 ```
 ## Setting up Ansible in Controller VM
 * Created provisioning file to automate update and upgrade
-* Install ansible and dependencies
+* automate installation of ansible and dependencies
 
 ## Create Host file within Controller
 * `cd /etc/ansible` 
@@ -74,7 +78,7 @@
 * Ensure nodes are known_hosts within controller VM, achieved by pinging IP of each node.  
 * Enter IP adresses of host nodes
 ```
-# add ip address/s of your agent nodes (VM)
+# add ip address/s of your agent nodes
 [web]
 192.168.33.10 ansible_connection=ssh ansible_ssh_user=vagrant ansible_ssh_pass=vagrant
 [db]
