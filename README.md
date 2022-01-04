@@ -1,5 +1,5 @@
 # Infrastructure as Code (IaC)
-![ansible](images/ansiblediagram.PNG)
+![ansible](images/ansiblediagram.png)
 ## IAC with Ansible
 ## Ansible benefits
 * Automate provisioning of multiple servers without needing to access each server individually
