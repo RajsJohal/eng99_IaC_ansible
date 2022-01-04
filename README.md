@@ -1,4 +1,7 @@
-# IAC with Ansible
+# Infrastructure as Code (IaC)
+## IAC with Ansible
+## Ansible benefits
+## Ansibe in DevOps
 
 
 ### Let's create Vagrantfile to create Three VMs for Ansible architecture
@@ -60,3 +63,32 @@
  
  end
 ```
+## Setting up Ansible in Controller VM
+* Created provisioning file to automate update and upgrade
+* Install ansible and dependencies
+
+## Create Host file within Controller
+* `cd /etc/ansible` 
+* `rm -rf hosts`
+* `sudo nano hosts`
+* Ensure nodes are known_hosts within controller VM, achieved by pinging IP of each node.  
+* Enter IP adresses of host nodes
+```
+# add ip address/s of your agent nodes (VM)
+[web]
+192.168.33.10 ansible_connection=ssh ansible_ssh_user=vagrant ansible_ssh_pass=vagrant
+[db]
+192.168.33.11 ansible_connection=ssh ansible_ssh_user=vagrant ansible_ssh_pass=vagrant
+```
+## Carry out Adhic commands:
+* Ping 
+  -  `ansible all -m ping` - pings all VM listed in hosts file
+  -  `ansible web -m ping`- pings web VM
+  -  `ansible db -m ping` - pings db wm
+
+* VM INFO
+  - `ansible all -a "uname -a"` - give basic information for all VM listed in hosts file
+  - `ansible web -a "uname -a"` - give basic information for db VM
+  - `ansible db -a "uname -a"` - give basic information for db VM
+  - `ansible all -a "<command>"` will run on all the VM in the hosts file
+  - `ansible db -a "ls -a"` shows all files of each VM in the home dir
