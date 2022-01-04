@@ -18,6 +18,8 @@
        
        controller.vm.network :private_network, ip: "192.168.33.12"
 
+       controller.vm.synced_folder "./provisions/hosts", "/home/vagrant/controller"
+
        controller.vm.provision "shell", path: "./provisions/controller_config.sh"
        
        # config.hostsupdater.aliases = ["development.controller"] 
