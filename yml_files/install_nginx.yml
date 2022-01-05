@@ -1,0 +1,28 @@
+---
+- hosts: web
+  gather_facts: true
+  become: true
+  tasks:
+  - name: Install Nginx in web Agent Node
+    apt: pkg=nginx state=present
+    become_user: root
+  - name: Reverse Proxy Configuration
+    blockinfile:
+      path: /etc/nginx/sites-available/default
+      insertafter: "location / {"
+      content:
+       "proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;"                                                                    [ Read 23 lines ]
+                                                                                                 Pos        M-U Undo          M-A Mark Text     M-] To Bracket    M-▲ Previous      ^B Back           ^◀ Prev Word      ^A Home
+  - name: Restart Nginx                                                                         To Line     M-E Redo          M-6 Copy Text     M-W WhereIs Next  M-▼ Next          ^F Forward        ^▶ Next Word      ^E End
+    shell: sudo systemctl restart nginx && sudo systemctl enable nginx
+
+ # - name: Import Mongo
+ #   import_playbook:  install_mongo.yml
+
+ # - name: Import Node
+ #   import_playbook: install_node.yml
