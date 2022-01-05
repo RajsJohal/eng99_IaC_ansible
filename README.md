@@ -129,7 +129,111 @@
 * To run playbook type `sudo ansible-playbook install_nginx.yml`
 * Check if it worked by typing `sudo ansible web -a "systemctl status nginx"`
 
+### Playbook for NodeJS on Web
 * Create a playbook to install nodejs in web node
+```
+# File to congure and install nodejs in web gent node
+---
+- hosts: web
+  gather_facts: true
+  become: true
+  tasks:
+  - name: Install NodeJS in web Agent Node
+    shell: curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash - && sudo apt-get install nodejs -y
+  - name: Install NPM
+    apt: pkg=npm state=present
+    become_user: root
+```
+
 * copy app folder
 * npm install then npm start
 * end goal is to see node running in our browser with port 3000
+
+### Playbook for MongoDB on DB
+```
+ Installing mongo in db vm
+---
+# hosts name 
+- hosts: db
+
+# gather facts for installation steps
+  gather_facts: true
+
+# we need admin access
+  become: true
+
+# the actual task is to install mongodb in db machine
+  tasks:
+  - name: Install MongoDB in DB Agent Node
+    apt: pkg=mongodb state=present
+  - name: Modify Mongod.conf file, update BindIP to be 0.0.0.0
+    lineinfile:
+      path: /etc/mongodb.conf
+      regexp: '^bind_ip'
+      line: 'bind_ip = 0.0.0.0'
+      backrefs: yes
+```
+* `lineinfile` method allows you to replace a line with any text you require, there are more arguments for greater capabilities with this method. 
+### Linking Web and DB
+* Mongod.conf file BindIP needs to be 0.0.0.0
+* Env Var DB_HOST in WEB - add DB_HOST="mongodb://192.168.33.11:27017/posts"
+* Reverse Proxy - `cd /etc/nginx/sites-available` edit default file
+* Navigate to app folder within web VM 
+* Run `npm install` and `npm start` 
+* Web app and DB should be synced and working on browser
+
+### Automate Reverse Proxy
+```
+- hosts: web
+  gather_facts: true
+  become: true
+  tasks:
+  - name: Install Nginx in web Agent Node
+    apt: pkg=nginx state=present
+    become_user: root
+  - name: Reverse Proxy Configuration
+    blockinfile:
+      path: /etc/nginx/sites-available/default
+      insertafter: "location / {"
+      content:
+       "proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;"
+
+  - name: Restart Nginx
+    shell: sudo systemctl restart nginx && sudo systemctl enable nginx
+```
+
+### Install Node and configure
+```
+# File to congure and install nodejs in web gent node
+---
+- hosts: web
+  gather_facts: true
+  become: true
+  tasks:
+  - name: Install NodeJS in web Agent Node
+    shell: curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash - && sudo apt-get install nodejs -y
+
+  - name: Install NPM
+    apt: pkg=npm state=present
+
+  - name: Install pm2
+    npm:
+      name: pm2
+      global: yes
+
+  - name: Env Variable
+    shell: echo "export DB_HOST=mongodb://192.168.33.11:27017/posts" >> ~/.bashrc
+
+  - name: Seed Database + Run App
+    shell: |
+      cd app/
+      npm install
+      node seeds/seed.js
+    # pm2 kill
+    # pm2 start
+```
