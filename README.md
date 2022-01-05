@@ -87,6 +87,8 @@
 [db]
 192.168.33.11 ansible_connection=ssh ansible_ssh_user=vagrant ansible_ssh_pass=vagrant
 ```
+* After typing `[web]` you can have multiple hosts under this heading in the case you have multiple app instances running, just add the IP and ansible ssh commands below heading and whenever you call a command from controller VM all web hosts will run said command.
+
 ## Carry out Adhic commands:
 * Ping 
   -  `ansible all -m ping` - pings all VM listed in hosts file
@@ -99,3 +101,35 @@
   - `ansible db -a "uname -a"` - give basic information for db VM
   - `ansible all -a "<command>"` will run on all the VM in the hosts file
   - `ansible db -a "ls -a"` shows all files of each VM in the home dir
+
+## Ansible Playbooks
+* Create a yml file to install nginx
+* `sudo nano install_nginx.yml`
+* Once inside type the following:
+```
+# File to configure and install nginx in web agent node
+---
+# which host do we need to install nginx in 
+- hosts: web
+  gather_facts: true
+
+
+# what facts do we want to see while installing
+
+
+# do we need admin access? yes (sudo)
+  become: true
+
+# what task do we want to perform in this yml file 
+  tasks:
+  - name: Install Nginx in web Agent Node
+    apt: pkg=nginx state=present
+    become_user: root
+```
+* To run playbook type `sudo ansible-playbook install_nginx.yml`
+* Check if it worked by typing `sudo ansible web -a "systemctl status nginx"`
+
+* Create a playbook to install nodejs in web node
+* copy app folder
+* npm install then npm start
+* end goal is to see node running in our browser with port 3000

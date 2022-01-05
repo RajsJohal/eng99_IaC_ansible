@@ -37,6 +37,8 @@
         web.vm.network :private_network, ip: "192.168.33.10"
         #   assigning private IP
 
+        web.vm.synced_folder "./app", "/home/vagrant/app"
+
         web.vm.provision "shell", path: "./provisions/web_config.sh"
         
         #config.hostsupdater.aliases = ["development.web"]
