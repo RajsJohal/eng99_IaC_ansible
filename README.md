@@ -78,6 +78,8 @@
 * `sudo nano hosts`
 * Ensure nodes are known_hosts within controller VM, achieved by pinging IP of each node.  
 * Enter IP adresses of host nodes
+* `sudo ansible web -m ping` & `sudo ansible db -m ping` will fail with just IP of each node but will add host IP to known_hosts file within `~/.ssh`
+* Then add ansible ssh commands within the hosts file and run `sudo ansible all -m ping`
 ```
 # add ip address/s of your agent nodes
 [web]
