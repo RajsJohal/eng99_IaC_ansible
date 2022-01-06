@@ -38,6 +38,7 @@
         #   assigning private IP
 
         web.vm.synced_folder "./app", "/home/vagrant/app"
+        web.vm.synced_folder "./default", "/home/vagrant/default"
 
         web.vm.provision "shell", path: "./provisions/web_config.sh"
         

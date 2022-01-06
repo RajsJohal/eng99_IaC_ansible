@@ -15,9 +15,9 @@
       global: yes
 
   - name: Env Variable
-    shell: echo "export DB_HOST=mongodb://192.168.33.11:27017/posts" >> ~/.bashrc                             [ Read 23 lines ]
-                                                                                                 Pos        M-U Undo          M-A Mark Text     M-] To Bracket    M-▲ Previous      ^B Back           ^◀ Prev Word      ^A Home
-  - name: Seed Database + Run App                                                               To Line     M-E Redo          M-6 Copy Text     M-W WhereIs Next  M-▼ Next          ^F Forward        ^▶ Next Word      ^E End
+    shell: echo "export DB_HOST=mongodb://192.168.33.11:27017/posts" >> ~/.bashrc                            
+                                                                                                            
+  - name: Seed Database + Run App                                                                      
     shell: |
       cd app/
       npm install
