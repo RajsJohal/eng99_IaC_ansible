@@ -5,7 +5,7 @@
   become: true
   tasks:
   - name: Install NodeJS in web Agent Node
-    shell: curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash - && sudo apt-get insta$
+    shell: curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash - && sudo apt-get install nodejs -y
   - name: Install NPM
     apt: pkg=npm state=present
 
@@ -23,4 +23,4 @@
       npm install
       node seeds/seed.js
       pm2 kill
-    # pm2 start
+      pm2 start
