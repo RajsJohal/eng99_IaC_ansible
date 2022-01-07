@@ -1,0 +1,13 @@
+---
+- hosts: aws
+  gather_facts: true
+  become: true
+  tasks:
+  - name: Update and Upgrade
+    shell: sudo apt-get update -y && sudo apt-get upgrade -y
+
+  - name: Install Git
+    shell: sudo apt-get install git -y
+
+  - name: Clone Repo
+    shell: git clone https://github.com/RajsJohal/eng99_app_code.git

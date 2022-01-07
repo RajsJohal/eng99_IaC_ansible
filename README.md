@@ -237,3 +237,8 @@
     # pm2 kill
     # pm2 start
 ```
+
+#### Ansible Vault
+* cd into /etc/ansible and create new directory for group_var/all and run `ansible-vault pass.yml` and make environment variables for the AWS keys, then create a password to use whenever you edit the file or run an ansible command
+* update hosts file with ip of app and db instance 
+* whenever you ru ansible commands for those instances must follow with `--ask-vault-pass` to provide the aws keys. 
