@@ -1,6 +1,6 @@
 # File to congure and install nodejs in web gent node
 ---
-- hosts: web
+- hosts: app
   gather_facts: true
   become: true
   tasks:

@@ -240,5 +240,9 @@
 
 #### Ansible Vault
 * cd into /etc/ansible and create new directory for group_var/all and run `ansible-vault pass.yml` and make environment variables for the AWS keys, then create a password to use whenever you edit the file or run an ansible command
+* `aws_access_key` and `aws_secret_key`
 * update hosts file with ip of app and db instance 
 * whenever you ru ansible commands for those instances must follow with `--ask-vault-pass` to provide the aws keys. 
+
+#### Ansible Hosts
+- add following line to hosts file `ec2-instance ansible_host=instance_ip ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/eng99.pem`
